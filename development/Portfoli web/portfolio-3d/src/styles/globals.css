@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for the 3D portfolio */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-royal-blue via-blue-900 to-deep-gold;
+    @apply text-dark-gray;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply min-h-screen flex items-center justify-center px-4 py-20;
+  }
+
+  .card {
+    @apply bg-white/10 backdrop-blur-lg rounded-xl p-8 shadow-2xl border border-white/20;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-deep-gold to-yellow-600 text-white px-6 py-3 rounded-lg font-semibold;
+    @apply hover:from-yellow-600 hover:to-deep-gold transform hover:scale-105 transition-all duration-300;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-deep-gold to-yellow-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-royal-blue;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-deep-gold rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-yellow-400;
+}

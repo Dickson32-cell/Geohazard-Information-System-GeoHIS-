@@ -1,0 +1,45 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a365d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d3748;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a5568;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="190" fill="url(#bgGradient)" stroke="url(#goldGradient)" stroke-width="4"/>
+
+  <!-- Professional silhouette -->
+  <g transform="translate(200,200)">
+    <!-- Head -->
+    <circle cx="0" cy="-40" r="45" fill="#e2e8f0" stroke="#cbd5e0" stroke-width="2"/>
+
+    <!-- Body/Suit -->
+    <path d="M-35,-5 Q-45,20 -35,60 L35,60 Q45,20 35,-5 Z" fill="#374151" stroke="#4b5563" stroke-width="2"/>
+    <path d="M-35,-5 L35,-5 L25,15 L-25,15 Z" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+
+    <!-- Tie -->
+    <path d="M-3,-5 L3,-5 L1,25 L-1,25 Z" fill="#dc2626"/>
+    <path d="M-8,15 Q0,35 8,15" fill="#b91c1c" stroke="#dc2626" stroke-width="1"/>
+
+    <!-- Collar -->
+    <path d="M-25,-5 Q-15,-15 -5,-5" fill="none" stroke="#4b5563" stroke-width="3"/>
+    <path d="M25,-5 Q15,-15 5,-5" fill="none" stroke="#4b5563" stroke-width="3"/>
+  </g>
+
+  <!-- Professional text overlay -->
+  <text x="200" y="320" text-anchor="middle" fill="#d4af37" font-family="Arial, sans-serif" font-size="16" font-weight="bold">ABDUL RASHID</text>
+  <text x="200" y="340" text-anchor="middle" fill="#d4af37" font-family="Arial, sans-serif" font-size="14" font-weight="600">DICKSON</text>
+  <text x="200" y="360" text-anchor="middle" fill="#a0aec0" font-family="Arial, sans-serif" font-size="12">Assistant Director</text>
+
+  <!-- Decorative elements -->
+  <circle cx="80" cy="80" r="8" fill="url(#goldGradient)" opacity="0.6"/>
+  <circle cx="320" cy="120" r="6" fill="url(#goldGradient)" opacity="0.4"/>
+  <circle cx="60" cy="320" r="5" fill="url(#goldGradient)" opacity="0.5"/>
+</svg>
