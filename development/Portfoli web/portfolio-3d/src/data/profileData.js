@@ -108,7 +108,7 @@ export const profileData = {
       tech: ["React", "Python", "Google OAuth", "GPS API", "Financial Analytics"],
       status: "In Production",
       highlights: [
-        "GPS-based clock-in/out system",
+        "GPS-based attendance tracking system",
         "Automated trial balance calculations",
         "Role-based access control",
         "Out-of-station allowance tracking",
