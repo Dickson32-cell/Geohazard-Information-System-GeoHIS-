@@ -1,0 +1,5 @@
+pdfplumber==0.7.5
+reportlab==3.5.67
+pytest==7.4.0
+selenium==4.15.2
+webdriver-manager==4.0.1

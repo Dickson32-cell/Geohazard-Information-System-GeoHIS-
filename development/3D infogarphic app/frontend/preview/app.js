@@ -21,6 +21,7 @@
     camera.position.set(0,5,10);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
+    window.controls = controls; // Expose for headless rendering
     clock = new THREE.Clock();
 
     const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
