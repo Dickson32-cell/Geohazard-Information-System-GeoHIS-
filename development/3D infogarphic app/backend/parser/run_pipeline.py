@@ -8,6 +8,7 @@ import argparse
 import json
 import os
 import sys
+import subprocess
 
 from parser import extract_tables_from_pdf
 
@@ -38,6 +39,9 @@ def main():
     ap.add_argument('--orchestrate', action='store_true', help='Run Orchestrator after parsing')
     ap.add_argument('--emit-frontend', action='store_true', help='Also write scene JSON to frontend/preview/scene.json (useful for local preview)')
     ap.add_argument('--frontend-path', default=None, help='Optional path to write scene JSON for frontend preview (overrides default)')
+    ap.add_argument('--serve-frontend', action='store_true', help='After emitting frontend files, serve the frontend/preview directory on a local HTTP server')
+    ap.add_argument('--serve-host', default='127.0.0.1', help='Host for the local preview server')
+    ap.add_argument('--serve-port', type=int, default=8000, help='Port for the local preview server')
     args = ap.parse_args()
 
     input_path = args.input
@@ -89,6 +93,23 @@ def main():
             print(f'Also wrote scene JSON for frontend preview to {frontend_path}')
         except Exception as e:
             print(f'Failed to write frontend scene JSON to {frontend_path}: {e}', file=sys.stderr)
+
+        # Optionally start a small static server to serve the preview directory
+        if args.serve_frontend:
+            # Serve the directory containing the frontend (the parent of scene.json)
+            serve_dir = os.path.dirname(frontend_path)
+            host = args.serve_host
+            port = args.serve_port
+
+            # Run the server in a subprocess so it persists after this script exits
+            server_script = os.path.join(os.path.dirname(__file__), 'server.py')
+            cmd = [sys.executable, server_script, '--dir', serve_dir, '--host', host, '--port', str(port)]
+            print(f'Starting preview server: {" ".join(cmd)}')
+            try:
+                subprocess.Popen(cmd)
+                print(f'Preview server started at http://{host}:{port}/')
+            except Exception as e:
+                print(f'Failed to start preview server: {e}', file=sys.stderr)
 
 
 if __name__ == '__main__':
