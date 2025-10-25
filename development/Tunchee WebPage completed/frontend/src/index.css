@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    /* Use dark blue text for better contrast on white backgrounds */
+    color: #001a37; /* primary-900 */
+    background-color: #ffffff; /* keep white background */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #003675; /* primary-700 for headings */
+  }
+
+  /* Accessibility: Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    /* primary focus outline */
+    outline: 2px solid #0056B3;
+    outline-offset: 2px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0066CC;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #004d99;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-primary-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  /* Secondary button: use light blue background with dark blue text for contrast */
+  .btn-secondary {
+    @apply bg-primary-100 text-primary-700 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-primary-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:ring-offset-2;
+  }
+
+  /* Card with subtle blue border and white background to keep visual hierarchy */
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-primary-50;
+  }
+
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+/*
+  Contrast adjustments:
+  - Default `.text-white` is overridden to a dark blue for readability on white backgrounds.
+  - When an element itself has a colored background class (or an ancestor contains a colored bg class),
+    re-enable white text so text remains white on dark/colored panels.
+  This keeps buttons and intentionally white-on-dark areas intact while preventing invisible text on white pages.
+*/
+
+@layer base {
+  /* Default: make text-white readable on white backgrounds */
+  .text-white {
+    color: #001a37 !important; /* dark-blue */
+  }
+
+  /* If the element itself has a colored background class, keep white text */
+  [class*='bg-primary'][class*='text-white'],
+  [class*='bg-blue'][class*='text-white'],
+  [class*='bg-gray-900'][class*='text-white'],
+  [class*='bg-black'][class*='text-white'] {
+    color: #ffffff !important;
+  }
+
+  /* If an ancestor has a colored background class, keep white text for descendants */
+  [class*='bg-primary'] .text-white,
+  [class*='bg-blue'] .text-white,
+  [class*='bg-gray-900'] .text-white,
+  [class*='bg-black'] .text-white {
+    color: #ffffff !important;
+  }
+}
