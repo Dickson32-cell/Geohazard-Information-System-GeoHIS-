@@ -12,7 +12,7 @@ import React, { useState, useCallback } from 'react';
 import { Card, Form, Button, Alert, Spinner, Table, Badge, Tab, Tabs, ButtonGroup } from 'react-bootstrap';
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8001/api/v1';
 
 const UploadPanel = ({ onResultsReceived }) => {
     const [latitude, setLatitude] = useState('');
@@ -57,7 +57,11 @@ const UploadPanel = ({ onResultsReceived }) => {
                 onResultsReceived(response.data);
             }
         } catch (err) {
-            setError(err.response?.data?.detail || 'Failed to analyze coordinates');
+            const errorDetail = err.response?.data?.detail;
+            const errorMessage = typeof errorDetail === 'string'
+                ? errorDetail
+                : (errorDetail ? JSON.stringify(errorDetail) : 'Failed to analyze coordinates');
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -81,7 +85,11 @@ const UploadPanel = ({ onResultsReceived }) => {
                 onResultsReceived(response.data);
             }
         } catch (err) {
-            setError(err.response?.data?.detail || 'Failed to process GeoJSON file');
+            const errorDetail = err.response?.data?.detail;
+            const errorMessage = typeof errorDetail === 'string'
+                ? errorDetail
+                : (errorDetail ? JSON.stringify(errorDetail) : 'Failed to process GeoJSON file');
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -105,7 +113,11 @@ const UploadPanel = ({ onResultsReceived }) => {
                 onResultsReceived(response.data);
             }
         } catch (err) {
-            setError(err.response?.data?.detail || 'Failed to process CSV file');
+            const errorDetail = err.response?.data?.detail;
+            const errorMessage = typeof errorDetail === 'string'
+                ? errorDetail
+                : (errorDetail ? JSON.stringify(errorDetail) : 'Failed to process CSV file');
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }

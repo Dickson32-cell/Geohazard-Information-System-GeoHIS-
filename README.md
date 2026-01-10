@@ -40,7 +40,7 @@ New Juaben South Municipality, Eastern Region, Ghana (110 km², population 183,0
 ```bash
 cd backend
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8001
 ```
 
 ### Frontend
@@ -52,7 +52,7 @@ npm start
 
 ### Access
 - Frontend: http://localhost:3001
-- API Documentation: http://localhost:8000/docs
+- API Documentation: http://localhost:8001/docs
 
 ## Project Structure
 
