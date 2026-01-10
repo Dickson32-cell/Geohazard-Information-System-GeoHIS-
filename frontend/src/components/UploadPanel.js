@@ -12,7 +12,7 @@ import React, { useState, useCallback } from 'react';
 import { Card, Form, Button, Alert, Spinner, Table, Badge, Tab, Tabs, ButtonGroup } from 'react-bootstrap';
 import axios from 'axios';
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8002/api/v1';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
 
 const UploadPanel = ({ onResultsReceived }) => {
     const [latitude, setLatitude] = useState('');
