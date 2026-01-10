@@ -18,15 +18,6 @@ const Navigation = () => {
             <LinkContainer to="/analyze">
               <Nav.Link>📍 Analyze Location</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/hazard-events">
-              <Nav.Link>Hazard Events</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/hazard-zones">
-              <Nav.Link>Hazard Zones</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/infrastructure">
-              <Nav.Link>Infrastructure</Nav.Link>
-            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Container>

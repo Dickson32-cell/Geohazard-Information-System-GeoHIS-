@@ -19,7 +19,7 @@ from app.routes.infrastructure_assets import router as infrastructure_assets_rou
 from app.routes.spatial_layers import router as spatial_layers_router
 from app.routes.analysis import router as analysis_router
 from app.routes.upload import router as upload_router
-from app.routes.thesis_data import router as thesis_data_router
+
 from app.routes.jobs import router as jobs_router
 from app.routes.export import router as export_router
 from app.auth.routes import router as auth_router
@@ -150,8 +150,7 @@ app.include_router(upload_router, prefix="/api/v1", tags=["upload"])
 # Research export routes (CSV, figures, tables)
 app.include_router(export_router, prefix="/api/v1", tags=["research-export"])
 
-# Thesis data routes
-app.include_router(thesis_data_router, prefix="/api/v1", tags=["thesis-data"])
+
 
 # Background job routes
 app.include_router(jobs_router, prefix="/api/v1", tags=["jobs"])
