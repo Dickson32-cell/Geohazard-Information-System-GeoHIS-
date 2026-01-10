@@ -1,0 +1,260 @@
+{
+    "type": "FeatureCollection",
+    "name": "infrastructure_assets",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:EPSG::4326"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "SCH-001",
+                "asset_type": "school",
+                "name": "Koforidua Senior High Technical School",
+                "population_served": 2500,
+                "vulnerability_score": 0.45,
+                "construction_year": 1962,
+                "building_condition": "good"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2610,
+                    6.0920
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "SCH-002",
+                "asset_type": "school",
+                "name": "Pope John Senior High School",
+                "population_served": 1800,
+                "vulnerability_score": 0.35,
+                "construction_year": 1957,
+                "building_condition": "good"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2540,
+                    6.1010
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "SCH-003",
+                "asset_type": "school",
+                "name": "Oyoko Methodist Primary School",
+                "population_served": 650,
+                "vulnerability_score": 0.55,
+                "construction_year": 1985,
+                "building_condition": "fair"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2220,
+                    6.1280
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "HOS-001",
+                "asset_type": "hospital",
+                "name": "Eastern Regional Hospital",
+                "population_served": 50000,
+                "vulnerability_score": 0.30,
+                "construction_year": 1972,
+                "building_condition": "good"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2555,
+                    6.0980
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "HOS-002",
+                "asset_type": "hospital",
+                "name": "St. Joseph's Hospital",
+                "population_served": 25000,
+                "vulnerability_score": 0.40,
+                "construction_year": 1965,
+                "building_condition": "good"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2630,
+                    6.0890
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "BRD-001",
+                "asset_type": "bridge",
+                "name": "Koforidua-Accra Road Bridge",
+                "population_served": 80000,
+                "vulnerability_score": 0.50,
+                "construction_year": 1988,
+                "building_condition": "fair"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2700,
+                    6.0750
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "BRD-002",
+                "asset_type": "bridge",
+                "name": "Effiduase Stream Crossing",
+                "population_served": 15000,
+                "vulnerability_score": 0.65,
+                "construction_year": 1995,
+                "building_condition": "poor"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.3050,
+                    6.0820
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "BLD-001",
+                "asset_type": "building",
+                "name": "New Juaben Municipal Assembly",
+                "population_served": 183000,
+                "vulnerability_score": 0.35,
+                "construction_year": 2005,
+                "building_condition": "excellent"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2580,
+                    6.0960
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "BLD-002",
+                "asset_type": "building",
+                "name": "Koforidua Central Market",
+                "population_served": 30000,
+                "vulnerability_score": 0.60,
+                "construction_year": 1980,
+                "building_condition": "fair"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2600,
+                    6.0940
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "BLD-003",
+                "asset_type": "building",
+                "name": "Ghana Water Company Pumping Station",
+                "population_served": 100000,
+                "vulnerability_score": 0.45,
+                "construction_year": 1990,
+                "building_condition": "good"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2480,
+                    6.1050
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "RD-001",
+                "asset_type": "road",
+                "name": "Koforidua-Bunso Road Section",
+                "population_served": 45000,
+                "vulnerability_score": 0.55,
+                "construction_year": 2010,
+                "building_condition": "good"
+            },
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        -0.2600,
+                        6.0950
+                    ],
+                    [
+                        -0.2800,
+                        6.1100
+                    ],
+                    [
+                        -0.3100,
+                        6.1200
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "asset_id": "RD-002",
+                "asset_type": "road",
+                "name": "Effiduase-Asokore Road",
+                "population_served": 20000,
+                "vulnerability_score": 0.70,
+                "construction_year": 1998,
+                "building_condition": "poor"
+            },
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        -0.3000,
+                        6.0800
+                    ],
+                    [
+                        -0.3200,
+                        6.0700
+                    ],
+                    [
+                        -0.3400,
+                        6.0650
+                    ]
+                ]
+            }
+        }
+    ]
+}

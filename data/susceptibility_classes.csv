@@ -1,0 +1,11 @@
+hazard_type,class_name,count,percentage
+flood,Very Low,0,0.0
+flood,Low,15,0.6
+flood,Moderate,691,27.639999999999997
+flood,High,1604,64.16
+flood,Very High,189,7.5600000000000005
+landslide,Very Low,0,0.0
+landslide,Low,51,2.04
+landslide,Moderate,747,29.880000000000003
+landslide,High,1482,59.28
+landslide,Very High,220,8.799999999999999

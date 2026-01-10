@@ -1,0 +1,252 @@
+{
+    "metadata": {
+        "title": "Ghana Climate Projections for Eastern Region",
+        "source": "World Bank Climate Change Knowledge Portal / CMIP6",
+        "region": "Eastern Region, Ghana",
+        "study_area": "New Juaben South Municipality",
+        "baseline_period": "1991-2020",
+        "projection_periods": [
+            "2021-2040",
+            "2041-2060",
+            "2081-2100"
+        ],
+        "data_source_url": "https://climateknowledgeportal.worldbank.org/country/ghana",
+        "citation": "World Bank Climate Change Knowledge Portal. Climate Data Projections - Ghana. Accessed January 2026.",
+        "notes": "Values derived from CMIP6 multi-model ensemble means for Ghana's Eastern Region"
+    },
+    "baseline": {
+        "period": "1991-2020",
+        "annual_precipitation_mm": {
+            "mean": 1650,
+            "min": 1450,
+            "max": 1850,
+            "std": 180
+        },
+        "monthly_precipitation_mm": {
+            "January": 25,
+            "February": 55,
+            "March": 110,
+            "April": 145,
+            "May": 175,
+            "June": 220,
+            "July": 150,
+            "August": 85,
+            "September": 165,
+            "October": 180,
+            "November": 85,
+            "December": 30
+        },
+        "rainy_season_total_mm": {
+            "major_season_mar_jul": 800,
+            "minor_season_sep_nov": 430
+        },
+        "temperature_c": {
+            "annual_mean": 26.2,
+            "max_mean": 31.5,
+            "min_mean": 21.8
+        },
+        "extreme_events": {
+            "days_above_35c": 15,
+            "days_heavy_rain_20mm": 45,
+            "days_very_heavy_rain_50mm": 8
+        }
+    },
+    "projections": {
+        "ssp126": {
+            "name": "SSP1-2.6 (Sustainability - Low emissions)",
+            "description": "Strong mitigation, sustainable development, limiting warming to 1.8°C",
+            "periods": {
+                "near_term_2021_2040": {
+                    "precipitation_change_percent": 2.5,
+                    "annual_precipitation_mm": 1691,
+                    "temperature_change_c": 0.8,
+                    "annual_mean_temp_c": 27.0,
+                    "extreme_rainfall_change_percent": 5,
+                    "flood_risk_factor": 1.08
+                },
+                "mid_century_2041_2060": {
+                    "precipitation_change_percent": 4.0,
+                    "annual_precipitation_mm": 1716,
+                    "temperature_change_c": 1.2,
+                    "annual_mean_temp_c": 27.4,
+                    "extreme_rainfall_change_percent": 8,
+                    "flood_risk_factor": 1.12
+                },
+                "end_century_2081_2100": {
+                    "precipitation_change_percent": 5.5,
+                    "annual_precipitation_mm": 1741,
+                    "temperature_change_c": 1.5,
+                    "annual_mean_temp_c": 27.7,
+                    "extreme_rainfall_change_percent": 12,
+                    "flood_risk_factor": 1.18
+                }
+            }
+        },
+        "ssp245": {
+            "name": "SSP2-4.5 (Middle of the Road)",
+            "description": "Intermediate challenges, moderate mitigation, 2.7°C warming",
+            "periods": {
+                "near_term_2021_2040": {
+                    "precipitation_change_percent": 3.5,
+                    "annual_precipitation_mm": 1708,
+                    "temperature_change_c": 0.9,
+                    "annual_mean_temp_c": 27.1,
+                    "extreme_rainfall_change_percent": 7,
+                    "flood_risk_factor": 1.12
+                },
+                "mid_century_2041_2060": {
+                    "precipitation_change_percent": 7.0,
+                    "annual_precipitation_mm": 1766,
+                    "temperature_change_c": 1.6,
+                    "annual_mean_temp_c": 27.8,
+                    "extreme_rainfall_change_percent": 15,
+                    "flood_risk_factor": 1.22
+                },
+                "end_century_2081_2100": {
+                    "precipitation_change_percent": 12.0,
+                    "annual_precipitation_mm": 1848,
+                    "temperature_change_c": 2.5,
+                    "annual_mean_temp_c": 28.7,
+                    "extreme_rainfall_change_percent": 25,
+                    "flood_risk_factor": 1.35
+                }
+            }
+        },
+        "ssp370": {
+            "name": "SSP3-7.0 (Regional Rivalry)",
+            "description": "High challenges, limited mitigation, 3.6°C warming",
+            "periods": {
+                "near_term_2021_2040": {
+                    "precipitation_change_percent": 4.0,
+                    "annual_precipitation_mm": 1716,
+                    "temperature_change_c": 1.0,
+                    "annual_mean_temp_c": 27.2,
+                    "extreme_rainfall_change_percent": 8,
+                    "flood_risk_factor": 1.15
+                },
+                "mid_century_2041_2060": {
+                    "precipitation_change_percent": 10.0,
+                    "annual_precipitation_mm": 1815,
+                    "temperature_change_c": 2.0,
+                    "annual_mean_temp_c": 28.2,
+                    "extreme_rainfall_change_percent": 22,
+                    "flood_risk_factor": 1.32
+                },
+                "end_century_2081_2100": {
+                    "precipitation_change_percent": 18.0,
+                    "annual_precipitation_mm": 1947,
+                    "temperature_change_c": 3.4,
+                    "annual_mean_temp_c": 29.6,
+                    "extreme_rainfall_change_percent": 40,
+                    "flood_risk_factor": 1.55
+                }
+            }
+        },
+        "ssp585": {
+            "name": "SSP5-8.5 (Fossil-fueled Development)",
+            "description": "Very high emissions, no mitigation, 4.4°C warming",
+            "periods": {
+                "near_term_2021_2040": {
+                    "precipitation_change_percent": 5.0,
+                    "annual_precipitation_mm": 1733,
+                    "temperature_change_c": 1.1,
+                    "annual_mean_temp_c": 27.3,
+                    "extreme_rainfall_change_percent": 10,
+                    "flood_risk_factor": 1.18
+                },
+                "mid_century_2041_2060": {
+                    "precipitation_change_percent": 14.0,
+                    "annual_precipitation_mm": 1881,
+                    "temperature_change_c": 2.4,
+                    "annual_mean_temp_c": 28.6,
+                    "extreme_rainfall_change_percent": 30,
+                    "flood_risk_factor": 1.42
+                },
+                "end_century_2081_2100": {
+                    "precipitation_change_percent": 25.0,
+                    "annual_precipitation_mm": 2063,
+                    "temperature_change_c": 4.2,
+                    "annual_mean_temp_c": 30.4,
+                    "extreme_rainfall_change_percent": 55,
+                    "flood_risk_factor": 1.75
+                }
+            }
+        }
+    },
+    "land_use_projections": {
+        "baseline_2020": {
+            "built_up_percent": 18.5,
+            "vegetation_percent": 45.2,
+            "agriculture_percent": 32.8,
+            "bare_land_percent": 3.5
+        },
+        "projected_2050": {
+            "built_up_percent": 35.0,
+            "vegetation_percent": 30.0,
+            "agriculture_percent": 31.5,
+            "bare_land_percent": 3.5,
+            "urbanization_factor": 1.89
+        },
+        "projected_2100": {
+            "built_up_percent": 52.0,
+            "vegetation_percent": 18.0,
+            "agriculture_percent": 26.5,
+            "bare_land_percent": 3.5,
+            "urbanization_factor": 2.81
+        }
+    },
+    "combined_future_risk": {
+        "methodology": "Risk_future = Risk_baseline × Climate_factor × Urbanization_factor",
+        "scenarios": {
+            "optimistic_ssp126_2050": {
+                "climate_factor": 1.12,
+                "urbanization_factor": 1.50,
+                "combined_risk_factor": 1.68,
+                "interpretation": "68% increase in flood risk"
+            },
+            "moderate_ssp245_2050": {
+                "climate_factor": 1.22,
+                "urbanization_factor": 1.89,
+                "combined_risk_factor": 2.31,
+                "interpretation": "131% increase in flood risk"
+            },
+            "pessimistic_ssp585_2050": {
+                "climate_factor": 1.42,
+                "urbanization_factor": 1.89,
+                "combined_risk_factor": 2.68,
+                "interpretation": "168% increase in flood risk"
+            },
+            "worst_case_ssp585_2100": {
+                "climate_factor": 1.75,
+                "urbanization_factor": 2.81,
+                "combined_risk_factor": 4.92,
+                "interpretation": "392% increase in flood risk (nearly 5x baseline)"
+            }
+        }
+    },
+    "references": [
+        {
+            "id": 1,
+            "citation": "IPCC, 2021: Climate Change 2021: The Physical Science Basis. Cambridge University Press.",
+            "doi": "10.1017/9781009157896"
+        },
+        {
+            "id": 2,
+            "citation": "World Bank Climate Change Knowledge Portal. Ghana Climate Data Projections. Accessed 2026.",
+            "url": "https://climateknowledgeportal.worldbank.org/country/ghana"
+        },
+        {
+            "id": 3,
+            "citation": "Ghana Meteorological Agency. Ghana Climate Atlas. Accessed 2026.",
+            "url": "https://meteo.gov.gh/gmet/climate-atlas/"
+        },
+        {
+            "id": 4,
+            "citation": "Amoako, C., & Boamah, E. F. (2015). The three-dimensional causes of flooding in Accra, Ghana. International Journal of Urban Sustainable Development, 7(1), 109-129."
+        },
+        {
+            "id": 5,
+            "citation": "Asumadu-Sarkodie, S., Owusu, P. A., & Jayaweera, H. M. (2015). Flood risk management in Ghana: A case study in Accra. Advances in Applied Science Research, 6(4), 196-211."
+        }
+    ]
+}

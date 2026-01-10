@@ -1,0 +1,196 @@
+{
+    "metadata": {
+        "title": "Ghana Eastern Region Geological Data",
+        "source": "British Geological Survey / Ghana Geological Survey Authority",
+        "source_urls": [
+            "https://www.bgs.ac.uk/data/webservices/",
+            "https://ggsa.gov.gh/",
+            "https://un-igrac.org/resource/ggis-global-groundwater-information-system"
+        ],
+        "scale": "1:1,000,000",
+        "study_area": "New Juaben South Municipality, Eastern Region",
+        "citation": "Ghana Geological Survey Department. (2009). Geological Map of Ghana 1:1,000,000. Accra, Ghana."
+    },
+    "geological_units": [
+        {
+            "code": "BIM",
+            "name": "Birimian Supergroup",
+            "age": "Paleoproterozoic (2.2-2.0 Ga)",
+            "lithology": "Metamorphosed volcanic and sedimentary rocks",
+            "description": "Volcanic greenstones, phyllites, schists, greywackes, and minor chemical sediments",
+            "weathering_characteristics": "Deep weathering common, saprolite development",
+            "landslide_susceptibility": "Moderate to High",
+            "flood_susceptibility": "Moderate",
+            "permeability": "Low to Very Low",
+            "drainage_characteristics": "Poor natural drainage",
+            "area_percent_study": 35.2,
+            "fr_value_landslide": 1.45,
+            "engineering_properties": {
+                "shear_strength": "Moderate when fresh, low when weathered",
+                "bearing_capacity": "Medium",
+                "stability": "Variable - depends on weathering depth"
+            }
+        },
+        {
+            "code": "TKW",
+            "name": "Tarkwaian Group",
+            "age": "Paleoproterozoic (2.1-2.0 Ga)",
+            "lithology": "Clastic sediments - conglomerates, quartzites, sandstones",
+            "description": "Relatively unmetamorphosed clastic sediments deposited in fluvial environment",
+            "weathering_characteristics": "Resistant quartzites, moderate weathering elsewhere",
+            "landslide_susceptibility": "Low to Moderate",
+            "flood_susceptibility": "Low",
+            "permeability": "Moderate (fractured zones higher)",
+            "drainage_characteristics": "Good drainage through fractures",
+            "area_percent_study": 22.8,
+            "fr_value_landslide": 0.78,
+            "engineering_properties": {
+                "shear_strength": "High",
+                "bearing_capacity": "High",
+                "stability": "Good"
+            }
+        },
+        {
+            "code": "DAH",
+            "name": "Dahomeyan System",
+            "age": "Paleoproterozoic (2.2-1.8 Ga)",
+            "lithology": "High-grade gneisses and migmatites",
+            "description": "High-grade metamorphic rocks including granulites, gneisses, and migmatites",
+            "weathering_characteristics": "Variable - extensive saprolite in tropical conditions",
+            "landslide_susceptibility": "Moderate",
+            "flood_susceptibility": "Low to Moderate",
+            "permeability": "Very Low (matrix), Moderate (fractures)",
+            "drainage_characteristics": "Variable depending on fracturing",
+            "area_percent_study": 18.5,
+            "fr_value_landslide": 0.92,
+            "engineering_properties": {
+                "shear_strength": "High when fresh",
+                "bearing_capacity": "High",
+                "stability": "Good except in weathered zones"
+            }
+        },
+        {
+            "code": "GRN",
+            "name": "Granitoids",
+            "age": "Paleoproterozoic",
+            "lithology": "Granites, granodiorites, tonalites",
+            "description": "Intrusive felsic rocks of various compositions",
+            "weathering_characteristics": "Spheroidal weathering, deep saprolite",
+            "landslide_susceptibility": "Low",
+            "flood_susceptibility": "Low",
+            "permeability": "Low (matrix), Moderate to High (fractures)",
+            "drainage_characteristics": "Good where fractured",
+            "area_percent_study": 15.3,
+            "fr_value_landslide": 0.65,
+            "engineering_properties": {
+                "shear_strength": "Very High",
+                "bearing_capacity": "Very High",
+                "stability": "Excellent when unweathered"
+            }
+        },
+        {
+            "code": "ALV",
+            "name": "Alluvium",
+            "age": "Quaternary",
+            "lithology": "Unconsolidated sand, silt, clay, gravel",
+            "description": "River deposits along major drainage channels and floodplains",
+            "weathering_characteristics": "N/A - unconsolidated",
+            "landslide_susceptibility": "Low (but bank erosion common)",
+            "flood_susceptibility": "Very High",
+            "permeability": "High to Moderate",
+            "drainage_characteristics": "High water table, flooding prone",
+            "area_percent_study": 8.2,
+            "fr_value_landslide": 0.35,
+            "engineering_properties": {
+                "shear_strength": "Very Low",
+                "bearing_capacity": "Low",
+                "stability": "Poor - subject to liquefaction"
+            }
+        }
+    ],
+    "structural_features": {
+        "faults": [
+            {
+                "name": "Akwapim Fault Zone",
+                "type": "Major reverse fault",
+                "trend": "NE-SW",
+                "activity": "Quaternary active",
+                "seismic_hazard": "Moderate",
+                "influence_on_landslides": "Enhanced susceptibility within 500m"
+            }
+        ],
+        "lineaments": {
+            "primary_direction": "NE-SW",
+            "secondary_direction": "NW-SE",
+            "density": "Moderate to High",
+            "influence_on_groundwater": "Controls local aquifer systems"
+        }
+    },
+    "hydrogeology": {
+        "aquifer_types": [
+            {
+                "type": "Weathered zone aquifer",
+                "geology": "All crystalline units",
+                "yield_typical": "0.5-5 m³/hr",
+                "depth": "10-30m"
+            },
+            {
+                "type": "Fractured aquifer",
+                "geology": "All crystalline units",
+                "yield_typical": "1-15 m³/hr",
+                "depth": "30-100m"
+            }
+        ],
+        "groundwater_recharge": "150-300 mm/year",
+        "water_table_depth": "5-20m (seasonal variation)"
+    },
+    "fr_analysis_summary": {
+        "method": "Frequency Ratio",
+        "total_landslides_inventory": 24,
+        "results_by_geology": {
+            "Birimian": {
+                "landslide_count": 12,
+                "fr_value": 1.45,
+                "interpretation": "High susceptibility"
+            },
+            "Dahomeyan": {
+                "landslide_count": 5,
+                "fr_value": 0.92,
+                "interpretation": "Moderate"
+            },
+            "Tarkwaian": {
+                "landslide_count": 4,
+                "fr_value": 0.78,
+                "interpretation": "Low-Moderate"
+            },
+            "Granitoids": {
+                "landslide_count": 2,
+                "fr_value": 0.65,
+                "interpretation": "Low"
+            },
+            "Alluvium": {
+                "landslide_count": 1,
+                "fr_value": 0.35,
+                "interpretation": "Very Low"
+            }
+        }
+    },
+    "references": [
+        {
+            "id": 1,
+            "citation": "Ghana Geological Survey Department. (2009). Geological Map of Ghana 1:1,000,000. Accra."
+        },
+        {
+            "id": 2,
+            "citation": "Kesse, G.O. (1985). The Mineral and Rock Resources of Ghana. A.A. Balkema, Rotterdam."
+        },
+        {
+            "id": 3,
+            "citation": "Leube, A., et al. (1990). The early Proterozoic Birimian Supergroup. Precambrian Research, 46, 139-165."
+        },
+        {
+            "id": 4,
+            "citation": "British Geological Survey. (2024). Ghana Geology GIS Dataset. BGS, Nottingham, UK."
+        }
+    ]
+}

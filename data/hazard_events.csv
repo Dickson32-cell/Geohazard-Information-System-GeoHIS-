@@ -1,0 +1,11 @@
+event_id,hazard_type,event_date,severity,affected_population,casualties,damage_estimate_ghs,description,data_source,longitude,latitude
+FLD-2019-001,flood,2019-06-15,high,2500,0,150000,Flash flooding in Koforidua central area after heavy rainfall,NADMO Eastern Region,-0.2583,6.0965
+FLD-2020-001,flood,2020-07-22,extreme,5000,2,320000,Major flooding along Densu River tributaries,Municipal Assembly Report,-0.275,6.102
+FLD-2021-001,flood,2021-06-28,medium,800,0,75000,Localized flooding in Effiduase area,Field Survey,-0.31,6.085
+FLD-2022-001,flood,2022-07-10,high,3200,0,200000,Flooding affecting New Juaben South market area,NADMO Eastern Region,-0.262,6.093
+FLD-2023-001,flood,2023-06-05,medium,1200,0,95000,Street flooding in Adweso,Municipal Assembly Report,-0.245,6.11
+LSD-2018-001,landslide,2018-08-12,high,150,1,180000,Landslide on hillside near Oyoko,Geological Survey Department,-0.22,6.13
+LSD-2020-001,landslide,2020-07-30,medium,50,0,120000,Shallow landslide affecting road near Akwadum,Ghana Highway Authority,-0.32,6.07
+LSD-2021-001,landslide,2021-09-15,low,20,0,45000,Minor slope failure near construction site,Field Survey,-0.235,6.105
+LSD-2023-001,landslide,2023-08-20,medium,100,0,160000,Debris flow after prolonged rainfall in hilly area,Municipal Assembly Report,-0.29,6.12
+ERO-2022-001,erosion,2022-05-18,medium,80,0,65000,Gully erosion affecting farmland near river,Agricultural Extension Office,-0.28,6.08

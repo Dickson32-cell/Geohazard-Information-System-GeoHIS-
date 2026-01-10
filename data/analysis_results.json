@@ -1,0 +1,468 @@
+{
+  "metadata": {
+    "generated_at": "2025-12-23T00:31:35.420177",
+    "study_area": "New Juaben South Municipality, Ghana",
+    "version": "1.0"
+  },
+  "ahp_analysis": {
+    "flood": {
+      "criteria": [
+        "elevation",
+        "slope",
+        "drainage_proximity",
+        "land_use",
+        "soil_permeability"
+      ],
+      "weights": {
+        "elevation": 0.2978339312553555,
+        "slope": 0.15777224173874263,
+        "drainage_proximity": 0.2978339312553554,
+        "land_use": 0.08878765401180377,
+        "soil_permeability": 0.15777224173874266
+      },
+      "lambda_max": 5.013262878435867,
+      "n": 5,
+      "consistency_index": 0.003315719608966816,
+      "random_index": 1.12,
+      "consistency_ratio": 0.0029604639365775143,
+      "is_consistent": true,
+      "message": "Consistency acceptable (CR < 0.10)"
+    },
+    "landslide": {
+      "criteria": [
+        "slope",
+        "aspect",
+        "geology",
+        "land_cover",
+        "rainfall"
+      ],
+      "weights": {
+        "slope": 0.3689395420269931,
+        "aspect": 0.10926522622902282,
+        "geology": 0.20626500275748072,
+        "land_cover": 0.10926522622902289,
+        "rainfall": 0.20626500275748066
+      },
+      "lambda_max": 5.0132628784358655,
+      "n": 5,
+      "consistency_index": 0.003315719608966372,
+      "random_index": 1.12,
+      "consistency_ratio": 0.0029604639365771175,
+      "is_consistent": true,
+      "message": "Consistency acceptable (CR < 0.10)"
+    }
+  },
+  "susceptibility": {
+    "flood": {
+      "method": "AHP (Analytical Hierarchy Process)",
+      "statistics": {
+        "mean": 65.61070223764537,
+        "std": 9.87939513398025,
+        "min": 33.24279111890361,
+        "max": 100.0,
+        "class_distribution": {
+          "Very Low": {
+            "count": 0,
+            "percentage": 0.0
+          },
+          "Low": {
+            "count": 15,
+            "percentage": 0.6
+          },
+          "Moderate": {
+            "count": 691,
+            "percentage": 27.639999999999997
+          },
+          "High": {
+            "count": 1604,
+            "percentage": 64.16
+          },
+          "Very High": {
+            "count": 189,
+            "percentage": 7.5600000000000005
+          }
+        }
+      }
+    },
+    "landslide": {
+      "method": "Frequency Ratio (FR)",
+      "statistics": {
+        "mean_lsi": 5.5309725763629025,
+        "std_lsi": 1.0662669596227339,
+        "min_lsi": 2.67832741830262,
+        "max_lsi": 9.125988313592439,
+        "class_distribution": {
+          "Very Low": {
+            "count": 0,
+            "percentage": 0.0
+          },
+          "Low": {
+            "count": 51,
+            "percentage": 2.04
+          },
+          "Moderate": {
+            "count": 747,
+            "percentage": 29.880000000000003
+          },
+          "High": {
+            "count": 1482,
+            "percentage": 59.28
+          },
+          "Very High": {
+            "count": 220,
+            "percentage": 8.799999999999999
+          }
+        },
+        "fr_summary": {
+          "total_study_area": 110.0,
+          "total_landslide_area": 0.5,
+          "landslide_density": 0.45454545454545453,
+          "factors": {
+            "slope": {
+              "classes": [
+                "0-5\u00b0",
+                "5-15\u00b0",
+                "15-30\u00b0",
+                "30-45\u00b0",
+                ">45\u00b0"
+              ],
+              "frequency_ratios": [
+                0.1466666666666667,
+                0.3666666666666667,
+                1.2571428571428571,
+                1.9799999999999998,
+                1.3199999999999998
+              ],
+              "max_fr": 1.9799999999999998,
+              "min_fr": 0.1466666666666667,
+              "high_susceptibility_classes": [
+                "15-30\u00b0",
+                "30-45\u00b0",
+                ">45\u00b0"
+              ]
+            },
+            "aspect": {
+              "classes": [
+                "Flat",
+                "North",
+                "Northeast",
+                "East",
+                "Southeast",
+                "South",
+                "Southwest",
+                "West",
+                "Northwest"
+              ],
+              "frequency_ratios": [
+                0.43999999999999995,
+                0.7333333333333334,
+                0.942857142857143,
+                1.1733333333333336,
+                1.4142857142857144,
+                1.1846153846153848,
+                1.0153846153846153,
+                0.9166666666666667,
+                0.7333333333333334
+              ],
+              "max_fr": 1.4142857142857144,
+              "min_fr": 0.43999999999999995,
+              "high_susceptibility_classes": [
+                "East",
+                "Southeast",
+                "South",
+                "Southwest"
+              ]
+            },
+            "geology": {
+              "classes": [
+                "Birimian",
+                "Tarkwaian",
+                "Granite",
+                "Alluvium"
+              ],
+              "frequency_ratios": [
+                1.3749999999999998,
+                1.056,
+                0.5866666666666668,
+                0.7333333333333334
+              ],
+              "max_fr": 1.3749999999999998,
+              "min_fr": 0.5866666666666668,
+              "high_susceptibility_classes": [
+                "Birimian",
+                "Tarkwaian"
+              ]
+            },
+            "land_cover": {
+              "classes": [
+                "Dense Forest",
+                "Light Forest",
+                "Agriculture",
+                "Built-up",
+                "Bare Land"
+              ],
+              "frequency_ratios": [
+                0.32999999999999996,
+                0.6160000000000001,
+                1.1,
+                1.0999999999999999,
+                2.2
+              ],
+              "max_fr": 2.2,
+              "min_fr": 0.32999999999999996,
+              "high_susceptibility_classes": [
+                "Agriculture",
+                "Built-up",
+                "Bare Land"
+              ]
+            },
+            "rainfall": {
+              "classes": [
+                "<1200mm",
+                "1200-1500mm",
+                "1500-1800mm",
+                ">1800mm"
+              ],
+              "frequency_ratios": [
+                0.43999999999999995,
+                0.6285714285714286,
+                1.3688888888888888,
+                1.0999999999999999
+              ],
+              "max_fr": 1.3688888888888888,
+              "min_fr": 0.43999999999999995,
+              "high_susceptibility_classes": [
+                "1500-1800mm",
+                ">1800mm"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "risk_assessment": {
+    "summary": {
+      "total_assets_analyzed": 12,
+      "risk_distribution": {
+        "Very Low": 5,
+        "Low": 7,
+        "Moderate": 0,
+        "High": 0,
+        "Critical": 0
+      },
+      "risk_percentages": {
+        "Very Low": 41.66666666666667,
+        "Low": 58.333333333333336,
+        "Moderate": 0.0,
+        "High": 0.0,
+        "Critical": 0.0
+      },
+      "critical_asset_count": 0
+    },
+    "critical_assets": [],
+    "all_results": [
+      {
+        "asset_id": "HOS-001",
+        "asset_name": "Eastern Regional Hospital",
+        "asset_type": "hospital",
+        "hazard_score": 55,
+        "vulnerability_score": 0.3,
+        "exposure_score": 1.0,
+        "risk_score": 16.5,
+        "risk_level": "Very Low",
+        "recommendations": [
+          "No immediate action required",
+          "Maintain awareness of changing conditions"
+        ]
+      },
+      {
+        "asset_id": "HOS-002",
+        "asset_name": "St. Joseph's Hospital",
+        "asset_type": "hospital",
+        "hazard_score": 55,
+        "vulnerability_score": 0.4,
+        "exposure_score": 1.0,
+        "risk_score": 22.0,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      },
+      {
+        "asset_id": "SCH-001",
+        "asset_name": "Koforidua SHTS",
+        "asset_type": "school",
+        "hazard_score": 55,
+        "vulnerability_score": 0.45,
+        "exposure_score": 0.25,
+        "risk_score": 6.19,
+        "risk_level": "Very Low",
+        "recommendations": [
+          "No immediate action required",
+          "Maintain awareness of changing conditions"
+        ]
+      },
+      {
+        "asset_id": "SCH-002",
+        "asset_name": "Pope John SHS",
+        "asset_type": "school",
+        "hazard_score": 55,
+        "vulnerability_score": 0.35,
+        "exposure_score": 0.18,
+        "risk_score": 3.46,
+        "risk_level": "Very Low",
+        "recommendations": [
+          "No immediate action required",
+          "Maintain awareness of changing conditions"
+        ]
+      },
+      {
+        "asset_id": "SCH-003",
+        "asset_name": "Oyoko Methodist Primary",
+        "asset_type": "school",
+        "hazard_score": 55,
+        "vulnerability_score": 0.55,
+        "exposure_score": 0.07,
+        "risk_score": 1.97,
+        "risk_level": "Very Low",
+        "recommendations": [
+          "No immediate action required",
+          "Maintain awareness of changing conditions"
+        ]
+      },
+      {
+        "asset_id": "BRD-001",
+        "asset_name": "Koforidua-Accra Bridge",
+        "asset_type": "bridge",
+        "hazard_score": 55,
+        "vulnerability_score": 0.5,
+        "exposure_score": 1.0,
+        "risk_score": 27.5,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      },
+      {
+        "asset_id": "BRD-002",
+        "asset_name": "Effiduase Stream Crossing",
+        "asset_type": "bridge",
+        "hazard_score": 55,
+        "vulnerability_score": 0.65,
+        "exposure_score": 1.0,
+        "risk_score": 35.75,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      },
+      {
+        "asset_id": "BLD-001",
+        "asset_name": "Municipal Assembly",
+        "asset_type": "building",
+        "hazard_score": 55,
+        "vulnerability_score": 0.35,
+        "exposure_score": 1.0,
+        "risk_score": 19.25,
+        "risk_level": "Very Low",
+        "recommendations": [
+          "No immediate action required",
+          "Maintain awareness of changing conditions"
+        ]
+      },
+      {
+        "asset_id": "BLD-002",
+        "asset_name": "Koforidua Central Market",
+        "asset_type": "building",
+        "hazard_score": 55,
+        "vulnerability_score": 0.6,
+        "exposure_score": 1.0,
+        "risk_score": 33.0,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      },
+      {
+        "asset_id": "BLD-003",
+        "asset_name": "Water Pumping Station",
+        "asset_type": "building",
+        "hazard_score": 55,
+        "vulnerability_score": 0.45,
+        "exposure_score": 1.0,
+        "risk_score": 24.75,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      },
+      {
+        "asset_id": "RD-001",
+        "asset_name": "Koforidua-Bunso Road",
+        "asset_type": "road",
+        "hazard_score": 55,
+        "vulnerability_score": 0.55,
+        "exposure_score": 1.0,
+        "risk_score": 30.25,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      },
+      {
+        "asset_id": "RD-002",
+        "asset_name": "Effiduase-Asokore Road",
+        "asset_type": "road",
+        "hazard_score": 55,
+        "vulnerability_score": 0.7,
+        "exposure_score": 1.0,
+        "risk_score": 38.5,
+        "risk_level": "Low",
+        "recommendations": [
+          "Standard maintenance protocols",
+          "Include in routine monitoring schedule"
+        ]
+      }
+    ],
+    "report_metadata": {
+      "generated_at": "2025-12-23T00:31:35.416607",
+      "methodology": "Hazard \u00d7 Exposure \u00d7 Vulnerability",
+      "version": "1.0"
+    }
+  },
+  "validation": {
+    "metrics": {
+      "accuracy": 0.813,
+      "precision": 0.6473,
+      "recall": 0.929,
+      "f1_score": 0.763,
+      "specificity": 0.7574,
+      "auc_roc": 0.9271,
+      "kappa": 0.6166
+    },
+    "confusion_matrix": {
+      "true_positive": 301,
+      "true_negative": 512,
+      "false_positive": 164,
+      "false_negative": 23,
+      "total": 1000
+    },
+    "classification": "Excellent",
+    "interpretation": {
+      "auc": "AUC of 0.9271 indicates excellent predictive capability",
+      "accuracy": "Overall accuracy of 81.3% correct predictions",
+      "recall": "Model detects 92.9% of actual hazard occurrences",
+      "precision": "64.7% of predicted high-risk areas are true hazards",
+      "kappa": "Kappa of 0.6166 indicates substantial agreement"
+    },
+    "threshold_used": 0.4,
+    "sample_size": 1000
+  }
+}

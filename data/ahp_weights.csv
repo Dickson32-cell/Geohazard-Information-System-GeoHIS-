@@ -1,0 +1,11 @@
+hazard_type,factor,weight
+flood,elevation,0.2978339312553555
+flood,slope,0.15777224173874263
+flood,drainage_proximity,0.2978339312553554
+flood,land_use,0.08878765401180377
+flood,soil_permeability,0.15777224173874266
+landslide,slope,0.3689395420269931
+landslide,aspect,0.10926522622902282
+landslide,geology,0.20626500275748072
+landslide,land_cover,0.10926522622902289
+landslide,rainfall,0.20626500275748066
