@@ -51,7 +51,7 @@ npm start
 ```
 
 ### Access
-- Frontend: http://localhost:3000
+- Frontend: http://localhost:3001
 - API Documentation: http://localhost:8000/docs
 
 ## Project Structure
@@ -142,4 +142,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Abdul Rashid Dickson  
 College of Professional Studies, Northeastern University  
-Email: dickson.ab@northeastern.edu
+Email: dickson.ab@northeastern.edu | dicksonapam@gmail.com

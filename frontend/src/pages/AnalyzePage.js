@@ -1,10 +1,12 @@
 /**
  * AnalyzePage - User data upload and susceptibility analysis page
+ * 
+ * Production version: No preset study area, dynamically centers on user data
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet';
 import UploadPanel from '../components/UploadPanel';
 import 'leaflet/dist/leaflet.css';
 
@@ -17,12 +19,43 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+// Component to dynamically update map view based on results
+const MapUpdater = ({ results }) => {
+    const map = useMap();
+
+    useEffect(() => {
+        if (results && results.length > 0) {
+            // Calculate bounding box from results
+            const lats = results.map(r => r.latitude);
+            const lons = results.map(r => r.longitude);
+
+            const minLat = Math.min(...lats);
+            const maxLat = Math.max(...lats);
+            const minLon = Math.min(...lons);
+            const maxLon = Math.max(...lons);
+
+            // Add some padding
+            const padding = 0.01;
+            const bounds = [
+                [minLat - padding, minLon - padding],
+                [maxLat + padding, maxLon + padding]
+            ];
+
+            // Fit map to bounds
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+    }, [results, map]);
+
+    return null;
+};
+
 const AnalyzePage = () => {
     const [analysisResults, setAnalysisResults] = useState(null);
+    const [studyAreaBounds, setStudyAreaBounds] = useState(null);
 
-    // Center on New Juaben South Municipality
-    const mapCenter = [6.07, -0.24];
-    const mapZoom = 12;
+    // Default center (world view)
+    const defaultCenter = [0, 0];
+    const defaultZoom = 2;
 
     // Get color based on combined risk
     const getRiskColor = (risk) => {
@@ -38,29 +71,50 @@ const AnalyzePage = () => {
 
     const handleResultsReceived = (results) => {
         setAnalysisResults(results);
+
+        // Calculate study area from results
+        if (results && results.results && results.results.length > 0) {
+            const lats = results.results.map(r => r.latitude);
+            const lons = results.results.map(r => r.longitude);
+
+            setStudyAreaBounds({
+                minLat: Math.min(...lats),
+                maxLat: Math.max(...lats),
+                minLon: Math.min(...lons),
+                maxLon: Math.max(...lons),
+                centerLat: (Math.min(...lats) + Math.max(...lats)) / 2,
+                centerLon: (Math.min(...lons) + Math.max(...lons)) / 2
+            });
+        }
     };
 
     return (
         <Container fluid className="py-4">
             <Row>
                 <Col md={4}>
-                    <h2 className="mb-4">📍 Analyze Location</h2>
+                    <h2 className="mb-4">📍 Analyze Locations</h2>
                     <p className="text-muted mb-4">
-                        Enter coordinates or upload a GeoJSON file to analyze flood and landslide
-                        susceptibility for your locations in New Juaben South Municipality.
+                        Upload your coordinates (CSV, GeoJSON) or enter them manually.
+                        The system will analyze flood and landslide susceptibility for each location.
                     </p>
                     <UploadPanel onResultsReceived={handleResultsReceived} />
                 </Col>
 
                 <Col md={8}>
                     <Card className="h-100">
-                        <Card.Header>
-                            <h5 className="mb-0">🗺️ Location Map</h5>
+                        <Card.Header className="d-flex justify-content-between align-items-center">
+                            <h5 className="mb-0">🗺️ Analysis Map</h5>
+                            {studyAreaBounds && (
+                                <small className="text-muted">
+                                    Study Area: {studyAreaBounds.minLat.toFixed(4)}° to {studyAreaBounds.maxLat.toFixed(4)}° N,
+                                    {studyAreaBounds.minLon.toFixed(4)}° to {studyAreaBounds.maxLon.toFixed(4)}° E
+                                </small>
+                            )}
                         </Card.Header>
                         <Card.Body className="p-0">
                             <MapContainer
-                                center={mapCenter}
-                                zoom={mapZoom}
+                                center={defaultCenter}
+                                zoom={defaultZoom}
                                 style={{ height: '600px', width: '100%' }}
                             >
                                 <TileLayer
@@ -68,20 +122,13 @@ const AnalyzePage = () => {
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
 
-                                {/* Study area boundary indicator */}
-                                <CircleMarker
-                                    center={[6.07, -0.24]}
-                                    radius={50}
-                                    pathOptions={{
-                                        color: '#0066cc',
-                                        fillColor: '#0066cc',
-                                        fillOpacity: 0.1,
-                                        dashArray: '5, 5'
-                                    }}
-                                />
+                                {/* Dynamic map updater */}
+                                {analysisResults && analysisResults.results && (
+                                    <MapUpdater results={analysisResults.results} />
+                                )}
 
                                 {/* Analysis results markers */}
-                                {analysisResults && analysisResults.results.map((result, idx) => (
+                                {analysisResults && analysisResults.results && analysisResults.results.map((result, idx) => (
                                     <CircleMarker
                                         key={idx}
                                         center={[result.latitude, result.longitude]}
@@ -97,6 +144,9 @@ const AnalyzePage = () => {
                                                 <strong>{result.name || `Location ${idx + 1}`}</strong>
                                                 <hr className="my-2" />
                                                 <p className="mb-1">
+                                                    <strong>Coordinates:</strong> {result.latitude.toFixed(6)}, {result.longitude.toFixed(6)}
+                                                </p>
+                                                <p className="mb-1">
                                                     <strong>Flood:</strong> {result.flood_class} ({result.flood_susceptibility}%)
                                                 </p>
                                                 <p className="mb-1">
@@ -105,11 +155,6 @@ const AnalyzePage = () => {
                                                 <p className="mb-0">
                                                     <strong>Combined Risk:</strong> {result.combined_risk}
                                                 </p>
-                                                {!result.in_study_area && (
-                                                    <p className="text-warning mt-2 mb-0">
-                                                        ⚠️ Outside study area
-                                                    </p>
-                                                )}
                                             </div>
                                         </Popup>
                                     </CircleMarker>
@@ -121,7 +166,7 @@ const AnalyzePage = () => {
                     {/* Legend */}
                     <Card className="mt-3">
                         <Card.Body>
-                            <h6 className="mb-2">Legend</h6>
+                            <h6 className="mb-2">Risk Level Legend</h6>
                             <div className="d-flex flex-wrap gap-3">
                                 <span><span className="badge" style={{ backgroundColor: '#dc3545' }}>●</span> Critical</span>
                                 <span><span className="badge" style={{ backgroundColor: '#fd7e14' }}>●</span> High</span>

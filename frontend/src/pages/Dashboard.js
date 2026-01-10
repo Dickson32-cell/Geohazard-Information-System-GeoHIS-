@@ -1,299 +1,154 @@
 /**
- * Dashboard - Main dashboard with thesis research data
+ * Dashboard - Clean production-ready landing page
+ * 
+ * No preset data - researchers upload their own data for analysis
  */
 
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Table, Badge, ProgressBar, Alert } from 'react-bootstrap';
-import { MapContainer, TileLayer, CircleMarker, Popup, GeoJSON } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import axios from 'axios';
-
-const API_BASE = 'http://localhost:8002/api/v1';
+import React from 'react';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [summary, setSummary] = useState(null);
-  const [hazardEvents, setHazardEvents] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [summaryRes, eventsRes] = await Promise.all([
-          axios.get(`${API_BASE}/thesis-data/summary`),
-          axios.get(`${API_BASE}/thesis-data/hazard-events`)
-        ]);
-        setSummary(summaryRes.data);
-        setHazardEvents(eventsRes.data);
-      } catch (err) {
-        console.error('Error fetching thesis data:', err);
-        setError('Could not load thesis data. Make sure the backend is running.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const position = [6.0965, -0.2583]; // New Juaben South coordinates
-
-  const getEventColor = (type) => {
-    switch (type) {
-      case 'flood': return '#2196F3';
-      case 'landslide': return '#FF9800';
-      case 'erosion': return '#795548';
-      default: return '#9E9E9E';
-    }
-  };
-
-  const getSeverityBadge = (severity) => {
-    const colors = {
-      extreme: 'danger',
-      high: 'warning',
-      medium: 'info',
-      low: 'secondary'
-    };
-    return <Badge bg={colors[severity] || 'secondary'}>{severity}</Badge>;
-  };
-
-  if (loading) {
-    return (
-      <Container className="py-4 text-center">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-        <p className="mt-2">Loading thesis data...</p>
-      </Container>
-    );
-  }
-
   return (
     <Container fluid className="py-4">
-      <h1 className="mb-2">🌍 GeoHIS Dashboard</h1>
-      <p className="text-muted mb-4">Geohazard Information System for New Juaben South Municipality, Ghana</p>
+      {/* Hero Section */}
+      <div className="text-center mb-5">
+        <h1 className="display-4 mb-3">🌍 GeoHIS</h1>
+        <h2 className="text-muted mb-4">Geohazard Information System</h2>
+        <p className="lead mb-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
+          A research-ready platform for flood and landslide susceptibility analysis.
+          Upload your location data and get detailed risk assessments with downloadable figures and tables.
+        </p>
+        <Link to="/analyze">
+          <Button variant="primary" size="lg" className="px-5">
+            📤 Upload Data & Start Analysis
+          </Button>
+        </Link>
+      </div>
 
-      {error && <Alert variant="warning">{error}</Alert>}
-
-      {/* Key Metrics Row */}
-      {summary && (
-        <Row className="mb-4">
-          <Col md={3}>
-            <Card className="h-100 border-primary">
-              <Card.Body className="text-center">
-                <h3 className="text-primary">{summary.validation.auc_roc}</h3>
-                <small className="text-muted">AUC-ROC Score</small>
-                <Badge bg="success" className="d-block mt-2">{summary.validation.classification}</Badge>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={3}>
-            <Card className="h-100 border-danger">
-              <Card.Body className="text-center">
-                <h3 className="text-danger">{summary.flood.high_percentage}%</h3>
-                <small className="text-muted">High Flood Susceptibility</small>
-                <div className="mt-2">
-                  <ProgressBar variant="danger" now={summary.flood.high_percentage} />
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={3}>
-            <Card className="h-100 border-warning">
-              <Card.Body className="text-center">
-                <h3 className="text-warning">{summary.landslide.high_percentage}%</h3>
-                <small className="text-muted">High Landslide Susceptibility</small>
-                <div className="mt-2">
-                  <ProgressBar variant="warning" now={summary.landslide.high_percentage} />
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={3}>
-            <Card className="h-100 border-info">
-              <Card.Body className="text-center">
-                <h3 className="text-info">{summary.risk_assessment.total_assets}</h3>
-                <small className="text-muted">Infrastructure Assets Assessed</small>
-                <small className="d-block mt-2">All in Low/Very Low risk</small>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      )}
-
-      <Row className="mb-4">
-        {/* Map with Historical Events */}
-        <Col md={8}>
-          <Card className="h-100">
-            <Card.Header>
-              <h5 className="mb-0">📍 Historical Hazard Events (2018-2023)</h5>
-            </Card.Header>
-            <Card.Body className="p-0">
-              <MapContainer center={position} zoom={12} style={{ height: '450px', width: '100%' }}>
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                />
-                {hazardEvents && hazardEvents.features && hazardEvents.features.map((event, idx) => (
-                  <CircleMarker
-                    key={idx}
-                    center={[event.geometry.coordinates[1], event.geometry.coordinates[0]]}
-                    radius={10}
-                    pathOptions={{
-                      color: getEventColor(event.properties.hazard_type),
-                      fillColor: getEventColor(event.properties.hazard_type),
-                      fillOpacity: 0.7
-                    }}
-                  >
-                    <Popup>
-                      <strong>{event.properties.hazard_type.toUpperCase()}</strong>
-                      <br />
-                      <strong>Date:</strong> {event.properties.event_date}
-                      <br />
-                      <strong>Severity:</strong> {event.properties.severity}
-                      <br />
-                      <strong>Affected:</strong> {event.properties.affected_population} people
-                      <br />
-                      <strong>Damage:</strong> GH₵ {event.properties.damage_estimate_ghs.toLocaleString()}
-                      <hr />
-                      <small>{event.properties.description}</small>
-                    </Popup>
-                  </CircleMarker>
-                ))}
-              </MapContainer>
+      {/* Features Row */}
+      <Row className="mb-5 g-4">
+        <Col md={4}>
+          <Card className="h-100 text-center border-0 shadow-sm">
+            <Card.Body className="py-4">
+              <div style={{ fontSize: '3rem' }} className="mb-3">📄</div>
+              <Card.Title>Upload Your Data</Card.Title>
+              <Card.Text className="text-muted">
+                Upload CSV files with coordinates, GeoJSON spatial data, or enter locations manually.
+                The system automatically detects your study area.
+              </Card.Text>
             </Card.Body>
-            <Card.Footer className="d-flex justify-content-center gap-4">
-              <span><span style={{ color: '#2196F3' }}>●</span> Flood</span>
-              <span><span style={{ color: '#FF9800' }}>●</span> Landslide</span>
-              <span><span style={{ color: '#795548' }}>●</span> Erosion</span>
-            </Card.Footer>
           </Card>
         </Col>
-
-        {/* AHP Weights */}
         <Col md={4}>
-          <Card className="h-100">
-            <Card.Header>
-              <h5 className="mb-0">⚖️ AHP Factor Weights (Flood)</h5>
-            </Card.Header>
-            <Card.Body>
-              {summary && (
-                <>
-                  <Table size="sm" striped>
-                    <thead>
-                      <tr>
-                        <th>Factor</th>
-                        <th>Weight</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.entries(summary.flood.weights).map(([factor, weight]) => (
-                        <tr key={factor}>
-                          <td>{factor.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</td>
-                          <td>
-                            <ProgressBar
-                              now={weight * 100}
-                              label={weight.toFixed(3)}
-                              variant="primary"
-                              style={{ height: '20px' }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                  <Alert variant="success" className="mb-0 py-2">
-                    <small>
-                      <strong>Consistency Ratio:</strong> {summary.flood.consistency_ratio}
-                      <br />✓ Acceptable (CR &lt; 0.10)
-                    </small>
-                  </Alert>
-                </>
-              )}
+          <Card className="h-100 text-center border-0 shadow-sm">
+            <Card.Body className="py-4">
+              <div style={{ fontSize: '3rem' }} className="mb-3">🔬</div>
+              <Card.Title>Scientific Analysis</Card.Title>
+              <Card.Text className="text-muted">
+                Uses AHP (Analytical Hierarchy Process) for flood susceptibility and
+                Frequency Ratio method for landslide susceptibility mapping.
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="h-100 text-center border-0 shadow-sm">
+            <Card.Body className="py-4">
+              <div style={{ fontSize: '3rem' }} className="mb-3">📊</div>
+              <Card.Title>Research-Ready Outputs</Card.Title>
+              <Card.Text className="text-muted">
+                Download results as CSV tables and publication-quality PNG figures
+                including bar charts, scatter plots, and box plots.
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      {/* Validation Metrics & Hazard Events Table */}
-      <Row>
-        <Col md={4}>
-          <Card>
-            <Card.Header>
-              <h5 className="mb-0">✅ Model Validation Metrics</h5>
+      {/* How It Works */}
+      <Card className="border-0 bg-light mb-5">
+        <Card.Body className="py-5">
+          <h3 className="text-center mb-4">How It Works</h3>
+          <Row className="text-center">
+            <Col md={3}>
+              <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+                style={{ width: '60px', height: '60px', fontSize: '1.5rem' }}>1</div>
+              <h5>Upload</h5>
+              <p className="text-muted small">
+                Upload your CSV with latitude/longitude columns or a GeoJSON file
+              </p>
+            </Col>
+            <Col md={3}>
+              <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+                style={{ width: '60px', height: '60px', fontSize: '1.5rem' }}>2</div>
+              <h5>Analyze</h5>
+              <p className="text-muted small">
+                System calculates flood and landslide susceptibility for each location
+              </p>
+            </Col>
+            <Col md={3}>
+              <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+                style={{ width: '60px', height: '60px', fontSize: '1.5rem' }}>3</div>
+              <h5>Visualize</h5>
+              <p className="text-muted small">
+                View results on an interactive map with risk classifications
+              </p>
+            </Col>
+            <Col md={3}>
+              <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+                style={{ width: '60px', height: '60px', fontSize: '1.5rem' }}>4</div>
+              <h5>Download</h5>
+              <p className="text-muted small">
+                Export tables (CSV) and figures (PNG) for your research papers
+              </p>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+
+      {/* Supported Formats */}
+      <Row className="mb-5">
+        <Col md={6}>
+          <Card className="h-100">
+            <Card.Header className="bg-success text-white">
+              <h5 className="mb-0">✅ Supported Input Formats</h5>
             </Card.Header>
             <Card.Body>
-              {summary && (
-                <Table size="sm">
-                  <tbody>
-                    <tr>
-                      <td>AUC-ROC</td>
-                      <td><strong>{summary.validation.auc_roc}</strong></td>
-                    </tr>
-                    <tr>
-                      <td>Accuracy</td>
-                      <td>{(summary.validation.accuracy * 100).toFixed(1)}%</td>
-                    </tr>
-                    <tr>
-                      <td>Recall</td>
-                      <td>{(summary.validation.recall * 100).toFixed(1)}%</td>
-                    </tr>
-                    <tr>
-                      <td>Sample Size</td>
-                      <td>{summary.validation.sample_size} points</td>
-                    </tr>
-                    <tr>
-                      <td>Classification</td>
-                      <td><Badge bg="success">{summary.validation.classification}</Badge></td>
-                    </tr>
-                  </tbody>
-                </Table>
-              )}
+              <ul className="mb-0">
+                <li><strong>CSV</strong> - Spreadsheet with <code>latitude</code> and <code>longitude</code> columns</li>
+                <li><strong>GeoJSON</strong> - Point features with coordinates</li>
+                <li><strong>Manual Entry</strong> - Enter individual coordinates directly</li>
+              </ul>
             </Card.Body>
           </Card>
         </Col>
-
-        <Col md={8}>
-          <Card>
-            <Card.Header>
-              <h5 className="mb-0">📋 Documented Hazard Events</h5>
+        <Col md={6}>
+          <Card className="h-100">
+            <Card.Header className="bg-info text-white">
+              <h5 className="mb-0">📥 Downloadable Outputs</h5>
             </Card.Header>
-            <Card.Body style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {hazardEvents && hazardEvents.features && (
-                <Table size="sm" striped hover>
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Type</th>
-                      <th>Severity</th>
-                      <th>Affected</th>
-                      <th>Damage (GH₵)</th>
-                      <th>Source</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {hazardEvents.features.map((event, idx) => (
-                      <tr key={idx}>
-                        <td>{event.properties.event_date}</td>
-                        <td>
-                          <Badge bg={event.properties.hazard_type === 'flood' ? 'primary' :
-                            event.properties.hazard_type === 'landslide' ? 'warning' : 'secondary'}>
-                            {event.properties.hazard_type}
-                          </Badge>
-                        </td>
-                        <td>{getSeverityBadge(event.properties.severity)}</td>
-                        <td>{event.properties.affected_population.toLocaleString()}</td>
-                        <td>{event.properties.damage_estimate_ghs.toLocaleString()}</td>
-                        <td><small>{event.properties.data_source}</small></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              )}
+            <Card.Body>
+              <ul className="mb-0">
+                <li><strong>Results CSV</strong> - Full analysis data for each location</li>
+                <li><strong>Summary Statistics</strong> - Descriptive statistics table</li>
+                <li><strong>Risk Classification</strong> - Frequency tables</li>
+                <li><strong>Figures (PNG)</strong> - Bar charts, scatter plots, box plots</li>
+              </ul>
             </Card.Body>
           </Card>
         </Col>
       </Row>
+
+      {/* Call to Action */}
+      <div className="text-center py-4">
+        <h4 className="mb-3">Ready to analyze your research locations?</h4>
+        <Link to="/analyze">
+          <Button variant="primary" size="lg">
+            Start Analysis →
+          </Button>
+        </Link>
+      </div>
     </Container>
   );
 };
