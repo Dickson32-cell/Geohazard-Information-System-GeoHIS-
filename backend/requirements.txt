@@ -46,23 +46,24 @@ structlog==23.2.0
 email-validator==2.1.0
 
 # =============================================================================
-# Scientific Computing & Analysis (for Research Papers)
+# Scientific Computing & Analysis
 # =============================================================================
 
-# Core Scientific
-numpy>=1.24.0
-scipy>=1.11.0
-pandas>=2.0.0
+# Core Scientific - PINNED for stability
+# numpy must be <2.0 for compatibility with bottleneck, rasterio, and other C extensions
+numpy>=1.24.0,<2.0.0
+scipy>=1.11.0,<1.14.0
+pandas>=2.0.0,<2.2.0
 
-# Machine Learning (Paper 4: ML vs Statistical Methods)
-scikit-learn>=1.3.0
-xgboost>=2.0.0
+# Machine Learning
+scikit-learn>=1.3.0,<1.5.0
+xgboost>=2.0.0,<2.1.0
 
 # Geospatial Analysis
-shapely>=2.0.0
-pyproj>=3.6.0
-rasterio>=1.3.0
+shapely>=2.0.0,<2.1.0
+pyproj>=3.6.0,<3.7.0
+rasterio>=1.3.0,<1.4.0
 
-# Visualization (for generating paper figures)
-matplotlib>=3.7.0
-seaborn>=0.13.0
+# Visualization
+matplotlib>=3.7.0,<3.9.0
+seaborn>=0.13.0,<0.14.0
