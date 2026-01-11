@@ -19,6 +19,7 @@ from app.routes.infrastructure_assets import router as infrastructure_assets_rou
 from app.routes.spatial_layers import router as spatial_layers_router
 from app.routes.analysis import router as analysis_router
 from app.routes.upload import router as upload_router
+from app.routes.study_area import router as study_area_router
 
 from app.routes.jobs import router as jobs_router
 from app.routes.export import router as export_router
@@ -146,6 +147,9 @@ app.include_router(spatial_layers_router, prefix="/api/v1", tags=["spatial-layer
 # Analysis routes
 app.include_router(analysis_router, tags=["analysis"])
 app.include_router(upload_router, prefix="/api/v1", tags=["upload"])
+
+# Study area configuration (for researchers to define their own regions)
+app.include_router(study_area_router, tags=["study-area"])
 
 # Research export routes (CSV, figures, tables)
 app.include_router(export_router, prefix="/api/v1", tags=["research-export"])

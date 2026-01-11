@@ -20,6 +20,7 @@ from app.middleware.security import (
 )
 from app.auth.dependencies import get_current_user
 from app.auth.models import User
+from app.routes.study_area import get_active_study_area, is_point_in_study_area
 
 router = APIRouter()
 
@@ -93,10 +94,12 @@ def calculate_combined_risk(flood: float, landslide: float) -> str:
 
 
 def is_in_study_area(lat: float, lon: float) -> bool:
-    """Check if coordinates are within New Juaben South Municipality bounds"""
-    # Approximate bounding box for New Juaben South Municipality
-    # Latitude: 6.02 to 6.12, Longitude: -0.30 to -0.18
-    return (6.02 <= lat <= 6.12) and (-0.30 <= lon <= -0.18)
+    """Check if coordinates are within the current study area bounds.
+    
+    Uses the dynamically configured study area, allowing researchers
+    to define their own regions.
+    """
+    return is_point_in_study_area(lat, lon)
 
 
 def calculate_flood_susceptibility(lat: float, lon: float) -> float:
@@ -352,31 +355,34 @@ async def analyze_geojson(
 @router.get("/upload/study-area")
 async def get_study_area_bounds():
     """
-    Get the bounding box of the study area for reference.
+    Get the bounding box of the current study area for reference.
     
-    Returns the geographic bounds of New Juaben South Municipality
+    Returns the geographic bounds of the currently configured study area
     for use in coordinate validation and map centering.
+    
+    Note: Researchers can define custom study areas using the /api/v1/study-area/define endpoint.
     """
+    study_area = get_active_study_area()
+    
     return {
-        "name": "New Juaben South Municipality",
-        "region": "Eastern Region",
-        "country": "Ghana",
+        "name": study_area.name,
+        "region": study_area.region or "Not specified",
+        "country": study_area.country or "Not specified",
         "bounds": {
-            "min_latitude": 6.02,
-            "max_latitude": 6.12,
-            "min_longitude": -0.30,
-            "max_longitude": -0.18
+            "min_latitude": study_area.bounds.min_latitude,
+            "max_latitude": study_area.bounds.max_latitude,
+            "min_longitude": study_area.bounds.min_longitude,
+            "max_longitude": study_area.bounds.max_longitude
         },
-        "center": {
-            "latitude": 6.07,
-            "longitude": -0.24
-        },
-        "area_km2": 110,
+        "center": study_area.get_center(),
+        "area_km2": study_area.area_km2 or "Not specified",
+        "is_custom": study_area.name != "New Juaben South Municipality",
         "limits": {
             "max_coordinates_per_request": MAX_COORDINATES,
             "max_file_size_mb": MAX_FILE_SIZE // (1024 * 1024)
         }
     }
+
 
 
 @router.get("/upload/limits")
