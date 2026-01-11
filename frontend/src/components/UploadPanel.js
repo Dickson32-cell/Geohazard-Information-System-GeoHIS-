@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { Card, Form, Button, Alert, Spinner, Table, Badge, Tab, Tabs, ButtonGroup } from 'react-bootstrap';
+import { Card, Form, Button, Alert, Spinner, Table, Badge, Tab, Tabs, ButtonGroup, Accordion, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8001/api/v1';
@@ -24,6 +24,37 @@ const UploadPanel = ({ onResultsReceived }) => {
     const [results, setResults] = useState(null);
     const [dragActive, setDragActive] = useState(false);
     const [activeTab, setActiveTab] = useState('coordinates');
+
+    // Study Area Configuration
+    const [studyArea, setStudyArea] = useState({
+        name: '',
+        minLat: '',
+        maxLat: '',
+        minLon: '',
+        maxLon: '',
+        country: '',
+        areaKm2: ''
+    });
+    const [studyAreaLoading, setStudyAreaLoading] = useState(false);
+    const [currentStudyArea, setCurrentStudyArea] = useState(null);
+
+    // Custom AHP Weights
+    const [floodWeights, setFloodWeights] = useState({
+        elevation: 0.298,
+        slope: 0.158,
+        drainage_proximity: 0.298,
+        land_use: 0.089,
+        soil_permeability: 0.158
+    });
+    const [landslideWeights, setLandslideWeights] = useState({
+        slope: 0.350,
+        aspect: 0.125,
+        geology: 0.225,
+        land_cover: 0.125,
+        rainfall: 0.175
+    });
+    const [weightsLoading, setWeightsLoading] = useState(false);
+    const [weightsApplied, setWeightsApplied] = useState({ flood: false, landslide: false });
 
     // Get risk badge color
     const getRiskBadgeColor = (risk) => {
@@ -283,13 +314,491 @@ const UploadPanel = ({ onResultsReceived }) => {
         }
     };
 
+    // ============== STUDY AREA FUNCTIONS ==============
+
+    // Load current study area on mount
+    const loadCurrentStudyArea = async () => {
+        try {
+            const response = await axios.get(`${API_BASE}/study-area/current`);
+            setCurrentStudyArea(response.data.config);
+        } catch (err) {
+            console.log('Could not load study area:', err);
+        }
+    };
+
+    // Define custom study area
+    const handleDefineStudyArea = async (e) => {
+        e.preventDefault();
+        setStudyAreaLoading(true);
+        setError(null);
+
+        try {
+            const response = await axios.post(`${API_BASE}/study-area/define`, {
+                name: studyArea.name,
+                bounds: {
+                    min_latitude: parseFloat(studyArea.minLat),
+                    max_latitude: parseFloat(studyArea.maxLat),
+                    min_longitude: parseFloat(studyArea.minLon),
+                    max_longitude: parseFloat(studyArea.maxLon)
+                },
+                country: studyArea.country || null,
+                area_km2: studyArea.areaKm2 ? parseFloat(studyArea.areaKm2) : null
+            });
+            setCurrentStudyArea(response.data.config);
+            alert('Study area defined successfully!');
+        } catch (err) {
+            setError(err.response?.data?.detail || 'Failed to define study area');
+        } finally {
+            setStudyAreaLoading(false);
+        }
+    };
+
+    // Reset study area to default
+    const handleResetStudyArea = async () => {
+        try {
+            await axios.delete(`${API_BASE}/study-area/reset`);
+            setCurrentStudyArea(null);
+            setStudyArea({ name: '', minLat: '', maxLat: '', minLon: '', maxLon: '', country: '', areaKm2: '' });
+            loadCurrentStudyArea();
+            alert('Study area reset to default');
+        } catch (err) {
+            setError('Failed to reset study area');
+        }
+    };
+
+    // ============== CUSTOM WEIGHTS FUNCTIONS ==============
+
+    // Calculate weight sum
+    const getFloodWeightSum = () => {
+        return Object.values(floodWeights).reduce((a, b) => a + b, 0);
+    };
+
+    const getLandslideWeightSum = () => {
+        return Object.values(landslideWeights).reduce((a, b) => a + b, 0);
+    };
+
+    // Apply custom weights
+    const handleApplyWeights = async () => {
+        setWeightsLoading(true);
+        setError(null);
+
+        try {
+            const response = await axios.post(`${API_BASE}/analysis/custom-weights`, {
+                flood_weights: floodWeights,
+                landslide_weights: landslideWeights,
+                normalize: true
+            });
+            setWeightsApplied({ flood: true, landslide: true });
+            alert('Custom weights applied successfully!');
+        } catch (err) {
+            setError(err.response?.data?.detail || 'Failed to apply custom weights');
+        } finally {
+            setWeightsLoading(false);
+        }
+    };
+
+    // Reset weights to defaults
+    const handleResetWeights = async () => {
+        try {
+            await axios.delete(`${API_BASE}/analysis/custom-weights/reset`);
+            setFloodWeights({
+                elevation: 0.298,
+                slope: 0.158,
+                drainage_proximity: 0.298,
+                land_use: 0.089,
+                soil_permeability: 0.158
+            });
+            setLandslideWeights({
+                slope: 0.350,
+                aspect: 0.125,
+                geology: 0.225,
+                land_cover: 0.125,
+                rainfall: 0.175
+            });
+            setWeightsApplied({ flood: false, landslide: false });
+            alert('Weights reset to defaults');
+        } catch (err) {
+            setError('Failed to reset weights');
+        }
+    };
+
+    // ============== LATEX EXPORT FUNCTIONS ==============
+
+    // Download LaTeX summary table
+    const downloadLatexSummary = async () => {
+        if (!results) return;
+        setExportLoading(prev => ({ ...prev, latexSummary: true }));
+
+        try {
+            const response = await axios.post(`${API_BASE}/export/latex/summary`, {
+                session_id: results.session_id,
+                results: results.results,
+                summary: results.summary,
+                table_caption: 'Summary Statistics of Susceptibility Analysis',
+                include_header: true
+            }, { responseType: 'blob' });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `summary_table_${results.session_id.slice(0, 8)}.tex`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            setError('Failed to download LaTeX summary');
+        } finally {
+            setExportLoading(prev => ({ ...prev, latexSummary: false }));
+        }
+    };
+
+    // Download LaTeX risk classification table
+    const downloadLatexRiskClass = async () => {
+        if (!results) return;
+        setExportLoading(prev => ({ ...prev, latexRisk: true }));
+
+        try {
+            const response = await axios.post(`${API_BASE}/export/latex/risk-classification`, {
+                session_id: results.session_id,
+                results: results.results,
+                summary: results.summary,
+                table_caption: 'Distribution of Locations by Risk Classification',
+                include_header: true
+            }, { responseType: 'blob' });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `risk_classification_${results.session_id.slice(0, 8)}.tex`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            setError('Failed to download LaTeX risk table');
+        } finally {
+            setExportLoading(prev => ({ ...prev, latexRisk: false }));
+        }
+    };
+
+    // Download LaTeX full results table
+    const downloadLatexFullResults = async () => {
+        if (!results) return;
+        setExportLoading(prev => ({ ...prev, latexFull: true }));
+
+        try {
+            const response = await axios.post(`${API_BASE}/export/latex/full-results`, {
+                session_id: results.session_id,
+                results: results.results,
+                summary: results.summary,
+                table_caption: 'Complete Analysis Results',
+                include_header: true
+            }, { responseType: 'blob' });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `full_results_${results.session_id.slice(0, 8)}.tex`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            setError('Failed to download LaTeX full results');
+        } finally {
+            setExportLoading(prev => ({ ...prev, latexFull: false }));
+        }
+    };
+
     return (
         <div className="upload-panel">
+            {/* Research Configuration Options */}
+            <Accordion className="mb-4">
+                {/* Study Area Configuration */}
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>🌍 Study Area Configuration</Accordion.Header>
+                    <Accordion.Body>
+                        <p className="text-muted small mb-3">
+                            Define your own study area bounds. Points outside this area will be flagged accordingly.
+                        </p>
+
+                        {currentStudyArea && (
+                            <Alert variant="info" className="mb-3">
+                                <strong>Current:</strong> {currentStudyArea.name}<br />
+                                <small>Bounds: {currentStudyArea.bounds.min_latitude.toFixed(2)}° to {currentStudyArea.bounds.max_latitude.toFixed(2)}° N,
+                                    {currentStudyArea.bounds.min_longitude.toFixed(2)}° to {currentStudyArea.bounds.max_longitude.toFixed(2)}° E</small>
+                            </Alert>
+                        )}
+
+                        <Form onSubmit={handleDefineStudyArea}>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Study Area Name *</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="e.g., Greater Accra Region"
+                                    value={studyArea.name}
+                                    onChange={(e) => setStudyArea({ ...studyArea, name: e.target.value })}
+                                    required
+                                />
+                            </Form.Group>
+
+                            <Row className="mb-2">
+                                <Col>
+                                    <Form.Label>Min Latitude *</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        step="any"
+                                        placeholder="5.0"
+                                        value={studyArea.minLat}
+                                        onChange={(e) => setStudyArea({ ...studyArea, minLat: e.target.value })}
+                                        required
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Label>Max Latitude *</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        step="any"
+                                        placeholder="6.0"
+                                        value={studyArea.maxLat}
+                                        onChange={(e) => setStudyArea({ ...studyArea, maxLat: e.target.value })}
+                                        required
+                                    />
+                                </Col>
+                            </Row>
+
+                            <Row className="mb-2">
+                                <Col>
+                                    <Form.Label>Min Longitude *</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        step="any"
+                                        placeholder="-1.0"
+                                        value={studyArea.minLon}
+                                        onChange={(e) => setStudyArea({ ...studyArea, minLon: e.target.value })}
+                                        required
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Label>Max Longitude *</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        step="any"
+                                        placeholder="0.0"
+                                        value={studyArea.maxLon}
+                                        onChange={(e) => setStudyArea({ ...studyArea, maxLon: e.target.value })}
+                                        required
+                                    />
+                                </Col>
+                            </Row>
+
+                            <Row className="mb-3">
+                                <Col>
+                                    <Form.Label>Country</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Ghana"
+                                        value={studyArea.country}
+                                        onChange={(e) => setStudyArea({ ...studyArea, country: e.target.value })}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Label>Area (km²)</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        step="any"
+                                        placeholder="500"
+                                        value={studyArea.areaKm2}
+                                        onChange={(e) => setStudyArea({ ...studyArea, areaKm2: e.target.value })}
+                                    />
+                                </Col>
+                            </Row>
+
+                            <ButtonGroup className="w-100">
+                                <Button variant="primary" type="submit" disabled={studyAreaLoading}>
+                                    {studyAreaLoading ? <Spinner animation="border" size="sm" /> : '✓'} Apply Study Area
+                                </Button>
+                                <Button variant="outline-secondary" onClick={handleResetStudyArea}>
+                                    Reset to Default
+                                </Button>
+                            </ButtonGroup>
+                        </Form>
+                    </Accordion.Body>
+                </Accordion.Item>
+
+                {/* Custom AHP Weights */}
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>⚖️ Custom AHP Weights</Accordion.Header>
+                    <Accordion.Body>
+                        <p className="text-muted small mb-3">
+                            Customize factor weights for analysis. Weights will be auto-normalized to sum to 1.0.
+                        </p>
+
+                        {/* Flood Weights */}
+                        <h6>🌊 Flood Susceptibility Factors</h6>
+                        <Row className="mb-2">
+                            <Col xs={6}>
+                                <Form.Label className="small">Elevation</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={floodWeights.elevation}
+                                    onChange={(e) => setFloodWeights({ ...floodWeights, elevation: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                            <Col xs={6}>
+                                <Form.Label className="small">Slope</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={floodWeights.slope}
+                                    onChange={(e) => setFloodWeights({ ...floodWeights, slope: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="mb-2">
+                            <Col xs={6}>
+                                <Form.Label className="small">Drainage Proximity</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={floodWeights.drainage_proximity}
+                                    onChange={(e) => setFloodWeights({ ...floodWeights, drainage_proximity: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                            <Col xs={6}>
+                                <Form.Label className="small">Land Use</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={floodWeights.land_use}
+                                    onChange={(e) => setFloodWeights({ ...floodWeights, land_use: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col xs={6}>
+                                <Form.Label className="small">Soil Permeability</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={floodWeights.soil_permeability}
+                                    onChange={(e) => setFloodWeights({ ...floodWeights, soil_permeability: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                            <Col xs={6} className="d-flex align-items-end">
+                                <Badge bg={Math.abs(getFloodWeightSum() - 1) <= 0.01 ? 'success' : 'warning'}>
+                                    Sum: {getFloodWeightSum().toFixed(3)}
+                                </Badge>
+                            </Col>
+                        </Row>
+
+                        <hr />
+
+                        {/* Landslide Weights */}
+                        <h6>⛰️ Landslide Susceptibility Factors</h6>
+                        <Row className="mb-2">
+                            <Col xs={6}>
+                                <Form.Label className="small">Slope</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={landslideWeights.slope}
+                                    onChange={(e) => setLandslideWeights({ ...landslideWeights, slope: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                            <Col xs={6}>
+                                <Form.Label className="small">Aspect</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={landslideWeights.aspect}
+                                    onChange={(e) => setLandslideWeights({ ...landslideWeights, aspect: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="mb-2">
+                            <Col xs={6}>
+                                <Form.Label className="small">Geology</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={landslideWeights.geology}
+                                    onChange={(e) => setLandslideWeights({ ...landslideWeights, geology: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                            <Col xs={6}>
+                                <Form.Label className="small">Land Cover</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={landslideWeights.land_cover}
+                                    onChange={(e) => setLandslideWeights({ ...landslideWeights, land_cover: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="mb-3">
+                            <Col xs={6}>
+                                <Form.Label className="small">Rainfall</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={landslideWeights.rainfall}
+                                    onChange={(e) => setLandslideWeights({ ...landslideWeights, rainfall: parseFloat(e.target.value) || 0 })}
+                                />
+                            </Col>
+                            <Col xs={6} className="d-flex align-items-end">
+                                <Badge bg={Math.abs(getLandslideWeightSum() - 1) <= 0.01 ? 'success' : 'warning'}>
+                                    Sum: {getLandslideWeightSum().toFixed(3)}
+                                </Badge>
+                            </Col>
+                        </Row>
+
+                        <ButtonGroup className="w-100">
+                            <Button variant="primary" onClick={handleApplyWeights} disabled={weightsLoading}>
+                                {weightsLoading ? <Spinner animation="border" size="sm" /> : '✓'} Apply Weights
+                            </Button>
+                            <Button variant="outline-secondary" onClick={handleResetWeights}>
+                                Reset to Defaults
+                            </Button>
+                        </ButtonGroup>
+
+                        {weightsApplied.flood && weightsApplied.landslide && (
+                            <Alert variant="success" className="mt-2 mb-0">
+                                ✓ Custom weights are active
+                            </Alert>
+                        )}
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+
             {/* Input Tabs: Coordinates, CSV, GeoJSON */}
             <Card className="mb-4">
                 <Card.Header>
                     <h5 className="mb-0">📤 Upload Research Data</h5>
                 </Card.Header>
+
                 <Card.Body>
                     <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-3">
                         {/* Coordinates Tab */}
@@ -559,7 +1068,7 @@ const UploadPanel = ({ onResultsReceived }) => {
                             </div>
 
                             {/* Figure Downloads */}
-                            <div>
+                            <div className="mb-4">
                                 <h6>📈 Figures (PNG)</h6>
                                 <ButtonGroup className="w-100 flex-wrap">
                                     <Button
@@ -585,6 +1094,40 @@ const UploadPanel = ({ onResultsReceived }) => {
                                         className="mb-2"
                                     >
                                         {exportLoading['susceptibility-boxplot'] ? <Spinner animation="border" size="sm" /> : '📦'} Box Plot
+                                    </Button>
+                                </ButtonGroup>
+                            </div>
+
+                            {/* LaTeX Table Downloads */}
+                            <div>
+                                <h6>📝 LaTeX Tables (.tex)</h6>
+                                <p className="text-muted small mb-2">
+                                    Publication-ready tables for inclusion in LaTeX documents.
+                                </p>
+                                <ButtonGroup className="w-100 flex-wrap">
+                                    <Button
+                                        variant="outline-dark"
+                                        onClick={downloadLatexSummary}
+                                        disabled={exportLoading.latexSummary}
+                                        className="mb-2"
+                                    >
+                                        {exportLoading.latexSummary ? <Spinner animation="border" size="sm" /> : '📊'} Summary Table
+                                    </Button>
+                                    <Button
+                                        variant="outline-dark"
+                                        onClick={downloadLatexRiskClass}
+                                        disabled={exportLoading.latexRisk}
+                                        className="mb-2"
+                                    >
+                                        {exportLoading.latexRisk ? <Spinner animation="border" size="sm" /> : '📋'} Risk Classification
+                                    </Button>
+                                    <Button
+                                        variant="outline-dark"
+                                        onClick={downloadLatexFullResults}
+                                        disabled={exportLoading.latexFull}
+                                        className="mb-2"
+                                    >
+                                        {exportLoading.latexFull ? <Spinner animation="border" size="sm" /> : '📄'} Full Results (longtable)
                                     </Button>
                                 </ButtonGroup>
                             </div>
