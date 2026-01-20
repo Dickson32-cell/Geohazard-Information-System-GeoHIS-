@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Video</title>
+    <link rel="stylesheet" href="scrollVideo.css">
+</head>
+<body>
+    <header class="hero">
+        <h1>Dickson32-cell</h1>
+        <p>Data Analytics, Website Development, Application Development</p>
+        <a href="#contact">Get in Touch</a>
+    </header>
+
+    <section class="scroll-video-section">
+        <div class="video-wrapper">
+            <video id="portfolioVideo" muted playsinline preload="metadata">
+                <source src="assets/portfolio-video.mp4" type="video/mp4">
+                <source src="assets/portfolio-video.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-loading">Loading video...</div>
+        </div>
+        <div class="scroll-progress-bar">
+            <div class="scroll-progress-bar-fill"></div>
+        </div>
+    </section>
+
+    <div class="scroll-spacer"></div>
+
+    <footer id="contact">
+        <p>Contact: [Your contact info]</p>
+    </footer>
+
+    <script src="scrollVideo.js"></script>
+</body>
+</html>
