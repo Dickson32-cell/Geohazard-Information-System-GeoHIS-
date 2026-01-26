@@ -1,0 +1,56 @@
+# This CITATION.cff file was generated to help users cite GeoHIS
+# For more information, see: https://citation-file-format.github.io/
+
+cff-version: 1.2.0
+title: "GeoHIS: Geohazard Information System"
+message: "If you use this software, please cite it using these metadata."
+type: software
+authors:
+  - given-names: Abdul Rashid
+    family-names: Dickson
+    email: dicksonapam@gmail.com
+    affiliation: Northeastern University
+    orcid: ""
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.18203124"
+    description: "Zenodo archive of GeoHIS"
+repository-code: "https://github.com/Dickson32-cell/Geohazard-Information-System-GeoHIS-"
+url: "https://github.com/Dickson32-cell/Geohazard-Information-System-GeoHIS-"
+abstract: >-
+  GeoHIS is an open-source web-based Geohazard Information System 
+  for flood and landslide susceptibility mapping and risk assessment. 
+  It integrates Multi-Criteria Decision Analysis (MCDA) techniques 
+  including Analytical Hierarchy Process (AHP) for flood susceptibility 
+  and Frequency Ratio (FR) method for landslide susceptibility mapping.
+keywords:
+  - geohazard
+  - flood susceptibility
+  - landslide susceptibility
+  - GIS
+  - risk assessment
+  - AHP
+  - frequency ratio
+  - web application
+  - spatial analysis
+license: MIT
+version: "1.0.0"
+date-released: "2026-01-10"
+contact:
+  - email: dicksonapam@gmail.com
+    name: Abdul Rashid Dickson
+  - email: dickson.ab@northeastern.edu
+    name: Abdul Rashid Dickson
+  - email: kojonyamekyedickson@gmail.com
+    name: Abdul Rashid Dickson
+preferred-citation:
+  type: software
+  authors:
+    - given-names: Abdul Rashid
+      family-names: Dickson
+      email: dicksonapam@gmail.com
+      affiliation: Northeastern University
+  title: "GeoHIS: Geohazard Information System"
+  year: 2026
+  doi: "10.5281/zenodo.18203124"
+  url: "https://github.com/Dickson32-cell/Geohazard-Information-System-GeoHIS-"
